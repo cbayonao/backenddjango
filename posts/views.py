@@ -45,4 +45,4 @@ def list_posts(request):
     """
     docstring
     """
-    return render(request, 'feed.html', {'posts': posts})
+    return render(request, '../templates/posts/feed.html', {'posts': posts})

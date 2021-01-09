@@ -1,29 +1,26 @@
 """
-Model for posts
+Posts models
 """
-# Django imports
+# django imports
+from django.contrib.auth.models import User
 from django.db import models
 
-
-class User(models.Model):
+class Post(models.Model):
     """
-    Define the user class
+    post model
     """
-    email = models.EmailField(unique=True)
-    passwd = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    is_admin = models.BooleanField(default=False)
-    country = models.CharField(max_length=100, default='')
-    city = models.CharField(max_length=100, default='')
-    bio = models.TextField(blank=True)
-    birthDate = models.DateField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    # On delete cada vez q se borre un user se borran todos sus posts
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile = models.ForeignKey('users.Profile', on_delete=models.CASCADE)
 
-    # Para hacer la representación en string de un objeto
+    title = models.CharField(max_length=255)
+    photo = models.ImageField(upload_to='posts/photos')
+
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+
     def __str__(self):
         """
-        Metodo para representar en string de los objetos
+        Retorna el username del user
         """
-        return self.email
+        return f'{self.title} by @{self.user.username}'
